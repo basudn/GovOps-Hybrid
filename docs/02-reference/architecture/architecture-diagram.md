@@ -1,9 +1,9 @@
 ```mermaid
 graph TD
     subgraph Governance Plane
-        A[Governance & Risk Monitoring]
-        B[Authorization Capability Catalog (ACC)]
-        C[Policy Authoring & Management]
+        A["Governance & Risk Monitoring"]
+        B["Authorization Capability Catalog (ACC)"]
+        C["Policy Authoring & Management"]
     end
 
     subgraph Enforcement Plane
