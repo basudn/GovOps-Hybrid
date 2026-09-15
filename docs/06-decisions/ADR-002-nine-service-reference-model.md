@@ -27,4 +27,4 @@ Whichever option is chosen affects how Conformance (`ADR-006`) eventually gets s
 Not yet evaluated in detail — this ADR exists to make the inconsistency visible and force a decision, per the group's item 3 agenda ("stabilize the core reference model").
 
 ## Links
-`../02-reference/components/README.md`, `../07-project-and-roadmap/open-questions.md`
+`../02-reference/components/README.md`, `../07-project-and-roadmap/README.md#open-questions`

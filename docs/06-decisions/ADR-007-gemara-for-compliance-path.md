@@ -28,4 +28,4 @@ GovOps does not need to build its own compliance taxonomy or maintain its own fr
 - **Map directly to each framework without an intermediate vocabulary**: rejected — doesn't scale, requires a new mapping per framework instead of reusing OSCAL's existing profiles.
 
 ## Links
-`../03-metrics-and-compliance/compliance-path/gemara-to-oscal.md`, `../01-explanation/01-problem/csa-compliance-gap.md`
+`../03-metrics-and-compliance/compliance-path/gemara-to-oscal.md`, `../01-explanation/problem/README.md#the-compliance-gap`

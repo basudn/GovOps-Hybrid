@@ -6,7 +6,7 @@ source_of_truth: true
 owner: TBD
 last_reviewed: "2026-09-12"
 tags: [govops, adr, capability]
-related: [../01-explanation/03-govops-thesis/capability-as-governance-unit.md]
+related: [../01-explanation/govops-thesis/capability-as-governance-unit.md]
 ---
 
 # ADR-001: Capability as Unit of Governance
@@ -27,7 +27,7 @@ GovOps treats the capability (group, action, resource) as the primary unit of go
 
 ## Alternatives considered
 - **Pure RBAC**: rejected — role explosion, poor fit for non-human actors.
-- **Pure PBAC without a governance layer**: PBAC already supports resource-first policies at the decision-mechanism level, but doesn't prescribe what gets cataloged/audited — GovOps adds that governance-process layer on top, it doesn't replace PBAC. See `../01-explanation/02-why-existing-approaches-fall-short/pbac-without-governance-layer.md`.
+- **Pure PBAC without a governance layer**: PBAC already supports resource-first policies at the decision-mechanism level, but doesn't prescribe what gets cataloged/audited — GovOps adds that governance-process layer on top, it doesn't replace PBAC. See `../01-explanation/why-existing-approaches-fall-short/pbac-without-governance-layer.md`.
 
 ## Links
-`../01-explanation/03-govops-thesis/capability-as-governance-unit.md`, `../02-reference/information-model/capability-model.md`
+`../01-explanation/govops-thesis/solution-overview.md#capability-as-the-unit-of-governance`, `../02-reference/information-model/README.md`

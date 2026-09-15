@@ -11,4 +11,23 @@ In the GovOps framework, the Policy Decision Point (PDP) is the component respon
 
 ## PDP vs. PEP
 
-The GovOps architecture maintains a clear separation between the Policy Decision Point (PDP) and the Policy Enforcement Point (PEP). The PEP is the component that enforces the decision made by the PDP. In many cases, the PEP is simply the application or service that is requesting the access decision.
+The GovOps architecture maintains a clear separation between the Policy Decision Point (PDP) and the Policy Enforcement Point (PEP). The PEP is the component that enforces the decision made by the PDP. In most GovOps deployments, **the PEP is the application itself** — GovOps does not introduce a separate enforcement proxy or sidecar as part of its reference model; the requesting application is responsible for acting on whatever decision the PDP returns.
+
+## Decision outcomes: allow, deny, and challenge
+
+A PDP decision is not always a simple binary. GovOps recognizes a third outcome, **challenge**,
+for cases where the PDP has enough information to know the request cannot be unconditionally
+allowed, but also should not be flatly denied — for example, a step-up authentication requirement
+before a high-risk capability can proceed.
+
+| Field | Purpose |
+|---|---|
+| `challenge_id` | Unique identifier for this challenge instance, so a subsequent request can present evidence against it. |
+| `capability_id` | The capability the original request was for. |
+| `reason` | Why the request was challenged rather than allowed. |
+| `required_evidence` | What the PEP/application must obtain and present to resolve the challenge (e.g., a step-up MFA assertion). |
+| `expires_at` | When the challenge itself expires if not resolved. |
+
+A challenge is recorded in the Runtime Authorization Context the same way an allow/deny decision
+is (see `./runtime-authorization-context.md`), so that challenge issuance and resolution remain
+part of the same auditable decision trail.

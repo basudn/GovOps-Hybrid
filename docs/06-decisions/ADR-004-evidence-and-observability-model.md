@@ -27,4 +27,4 @@ Requires defining what happens to an authorization-evidence record when the unde
 - **Merge both into one evidence record**: rejected — conflates two things with genuinely different truth semantics (a decision was correct given what was known at the time; execution can violate that even without the decision being "wrong").
 
 ## Links
-`../02-reference/components/kernel-observability.md`, `../01-explanation/06-illustrative-use-cases/credential-revocation-during-execution.md`, `../01-explanation/07-positioning/relationship-to-muse.md` (Meta Muse's continuous taint tracking as a related but more advanced pattern)
+`../02-reference/components/kernel-observability.md`, `../01-explanation/illustrative-use-cases/governance-scenarios.md#credential-revocation-during-execution`, `../01-explanation/positioning/README.md#relationship-to-metas-muse` (Meta Muse's continuous taint tracking as a related but more advanced pattern)

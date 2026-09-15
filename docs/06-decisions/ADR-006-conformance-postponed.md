@@ -27,4 +27,4 @@ No Conformance section can be written with real MUST/SHOULD requirements yet, be
 - **Write a full Conformance section now**: rejected — would lock in requirements the group hasn't actually agreed on, on top of a model still in flux.
 
 ## Links
-`../02-reference/conformance/README.md`, `../01-explanation/04-architectural-principles.md`
+`../02-reference/conformance/README.md`, `../01-explanation/architectural-principles.md`

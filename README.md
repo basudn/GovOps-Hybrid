@@ -13,7 +13,25 @@ This specification is organized using a hybrid approach inspired by the [Diátax
     - **01-explanation**: Explanatory material, including the problem statement, the GovOps thesis, and its relation to other frameworks.
     - **02-reference**: Detailed technical reference material for the architecture, components, and information model.
     - **03-metrics-and-compliance**: Information on GovOps metrics and the path to compliance.
-    - **04-how-to-and-process**: Practical guides for implementing and using GovOps (work in progress).
-    - **05-tutorials**: Learning-oriented tutorials (work in progress).
+    - **04-how-to-and-process**: Practical guides for implementing and using GovOps (planned).
+    - **05-tutorials**: Learning-oriented tutorials — one exists today; the rest are planned.
     - **06-decisions**: A log of Architectural Decision Records (ADRs) that document the rationale behind key design choices.
-    - **07-project-and-roadmap**: Project management information, including the roadmap and open questions.
+    - **07-project-and-roadmap**: Project management information, including the maturity model, open questions, and release timeline.
+
+## Entry Points by Audience
+
+- **[For Executives](./docs/for-executives.md)** — business value, risk, and compliance framing for
+  leadership audiences.
+- **[For Architects and Engineers](./docs/for-architects.md)** — a technical starting point for
+  implementing or integrating with GovOps.
+
+## Community & Governance
+
+GovOps is developed as an OWASP Community Specification Working Group.
+
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** — how to propose changes: issue types, pull request
+  workflow, document conventions, and good first contributions.
+- **[GOVERNANCE.md](./GOVERNANCE.md)** — Maintainer and Editor roles, consensus-based decision
+  making, and the Pre-Draft → Draft → Approved specification lifecycle.
+- **[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)** — the Contributor Covenant v2.0 standards that
+  apply to all project spaces.

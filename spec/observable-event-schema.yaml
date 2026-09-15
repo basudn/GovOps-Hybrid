@@ -1,31 +1,89 @@
-# GovOps Observable Event Schema v0.1
+# GovOps Observable Event Schema v0.0.1
+#
+# Structure of a GovOps Runtime Authorization Context record: the minimal decision record a
+# Policy Decision Point emits after every authorization decision. Deliberately minimal by
+# design -- see docs/02-reference/components/runtime-authorization-context.md and
+# docs/06-decisions/ADR-004-evidence-and-observability-model.md for why.
+#
+# Status: draft, not yet ratified as normative -- see docs/02-reference/conformance/README.md.
 
 event:
+  type: object
   required:
     - capability_id
     - decision
+    - decision_id
+    - policy_store_id
+    - policy_store_version
     - timestamp
   properties:
     capability_id:
       type: string
-      description: The unique identifier of the capability that was the subject of the access request.
+      description: >
+        The capability_id of the capability that was evaluated (see acc-schema.yaml). The
+        primary correlation key joining this decision to Kernel Observability, Event Handling
+        and Response, Continuous Compliance, and Governance Metrics.
     decision:
       type: string
-      enum: [allow, deny]
-      description: The outcome of the decision.
+      enum: [allow, deny, challenge]
+      description: >
+        The outcome of the authorization decision. "challenge" means the PDP could not decide
+        without additional evidence -- see the challenge_* fields below, which are only present
+        when decision is "challenge".
+    decision_id:
+      type: string
+      description: >
+        Unique identifier for this specific decision instance. Never reused. Required for
+        traceability even when a capability is evaluated multiple times in quick succession.
     policy_store_id:
       type: string
-      description: The identifier of the policy store that was used to make the decision.
+      description: "Identifies which policy store/bundle produced this decision."
     policy_store_version:
       type: string
-      description: The version of the policy store that was used.
-    actor_identity:
-      type: string
-      description: The identity of the actor performing the action.
-    context:
-      type: object
-      description: A JSON object containing additional context about the request.
+      description: >
+        Identifies which revision of that policy store was in force, allowing exact
+        reconstruction of the policy state at decision time.
     timestamp:
       type: string
       format: date-time
-      description: The timestamp of when the event occurred.
+      description: "UTC timestamp (ISO 8601) of when the authorization decision was made."
+    challenge_id:
+      type: string
+      description: 'Present only when decision is "challenge". Identifies the challenge instance.'
+    reason:
+      type: string
+      description: >
+        Present only when decision is "challenge". Why the PDP could not decide outright.
+    required_evidence:
+      type: string
+      description: >
+        Present only when decision is "challenge". What evidence would resolve the challenge.
+    expires_at:
+      type: string
+      format: date-time
+      description: 'Present only when decision is "challenge". When the challenge expires.'
+
+# By design, this record never includes the items below -- these are the Runtime Authorization
+# Context's non-responsibilities
+# (docs/02-reference/components/runtime-authorization-context.md#non-responsibilities), not an
+# oversight. Earlier drafts of this schema included an `actor_identity` and a free-form
+# `context` object (IP address, transaction amount, etc.); both were removed because they
+# directly contradicted this minimality decision and would have made the record unsafe to fan
+# out to multiple downstream consumers with different trust levels.
+not_carried:
+  excludes:
+    - "Access/ID/refresh tokens, or any token material"
+    - "Policy text or policy logic (only policy_store_id/policy_store_version travel)"
+    - "The full authorization request payload -- no request body, headers, or arbitrary attributes"
+    - "Actor/subject identity beyond what capability_id and the decision already imply"
+
+# Identifiers that would extend this record are named but not yet defined at the information-
+# model level, so they are intentionally absent here too. See
+# docs/02-reference/information-model/README.md#core-identifiers and
+# docs/06-decisions/ADR-003-information-model-identifier-strategy.md.
+open_gaps:
+  fields:
+    - trace_execution_id
+    - credential_reference
+    - runtime_workload_identifier
+    - event_id

@@ -27,4 +27,4 @@ This boundary needs an explicit non-responsibility statement in both components'
 - **Treat Federation Management as an Identity-petal concern instead**: rejected per Mike Schwartz's reasoning — TPRM/onboarding is a governance-lifecycle task even though its subject matter (issuer trust) is identity-adjacent.
 
 ## Links
-`../02-reference/components/federation-management.md`, `../02-reference/components/policy-management.md`, `../01-explanation/07-positioning/relationship-to-muse.md` (Meta Muse's authd/Sentinel split as a working precedent for this exact separation)
+`../02-reference/components/federation-management.md`, `../02-reference/components/policy-management.md`, `../01-explanation/positioning/README.md#relationship-to-metas-muse` (Meta Muse's authd/Sentinel split as a working precedent for this exact separation)

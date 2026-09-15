@@ -1,49 +1,112 @@
-# GovOps ACC Schema v0.1
+# GovOps ACC Schema v0.0.1
 #
-# LLM Instruction: This schema defines an entry in the Authorization Capability Catalog (ACC).
-# Each entry represents a unique, governable "capability".
-# Focus on the relationship between `action` and `resource` as the core identifier.
+# Describes an entry in the Authorization Capability Catalog (ACC): a governed (action, resource)
+# pair. Mirrors the Authorization Capability Profile CUE module documented in
+# docs/02-reference/components/capability-catalog.md and the decision recorded in
+# docs/06-decisions/ADR-001-capability-as-unit-of-governance.md.
+#
+# Status: draft, not yet ratified as normative -- see docs/02-reference/conformance/README.md.
 
 capability:
   type: object
   required:
     - id
+    - group
     - action
     - resource
   properties:
     id:
       type: string
-      description: "A unique, persistent identifier for the capability. (e.g., UUID, URN)"
-      example: "cap:01H8XMPQW9S8T8Z1Y0R4F8J4A4"
+      description: >
+        capability_id. Lowercase hexadecimal SHA-256 digest of
+        "<group-slug>|<action-slug>|<resource-slug>". MUST match the recomputed hash of this
+        entry's own group/action/resource -- govops lint rejects catalogs where it does not. See
+        "capability_id computation" below. Never reused for a different action-resource pair,
+        even after the capability is retired.
+      pattern: "^[0-9a-f]{64}$"
+      example: "0c451a4b7305a117ad7e4c874799c5982100823ef1b71db3490fffc35a63fef3"
+    group:
+      type: string
+      description: >
+        The slug of the Group this capability belongs to (e.g., "payments", "lending"). Feeds the
+        capability_id hash preimage and the catalog's Lexicon-backed organization.
+      example: "payments"
     action:
       type: string
-      description: "The action being performed, typically a verb. (e.g., 'read', 'approve', 'delete')"
-      example: "approve-trade"
+      description: >
+        The verb being governed, typically drawn from the catalog's Lexicon (e.g., "read",
+        "approve", "transfer"). Part of the capability_id hash preimage.
+      example: "transfer"
     resource:
       type: string
-      description: "The resource upon which the action is performed, often a noun or resource type."
-      example: "financial-transaction"
+      description: >
+        The resource type the action applies to (a type, not a specific instance), typically
+        drawn from the catalog's Lexicon (e.g., "invoice", "bank-account"). Part of the
+        capability_id hash preimage.
+      example: "bank-account"
+    title:
+      type: string
+      description: "Short human-readable name for the capability."
+      example: "Transfer funds"
     description:
       type: string
       description: "A human-readable description of what the capability represents."
-      example: "The capability to approve a financial transaction over a certain value."
-    risk:
+      example: "The capability to initiate a funds transfer between bank accounts."
+    risk-tier:
       type: string
-      description: "An assessment of the inherent risk associated with this capability."
-      enum: [low, medium, high, critical]
-      example: "high"
-    business_impact:
+      enum: [critical, high, medium, low]
+      description: >
+        Likelihood-oriented classifier: how probable is unauthorized or failed use of this
+        capability? Optional (SHOULD be set). Not part of the capability_id preimage --
+        re-assessable over time without changing the capability's identity.
+      example: "critical"
+    business-impact:
       type: string
-      description: "The potential business impact if this capability is compromised or misused."
-      enum: [low, moderate, significant, severe]
-      example: "severe"
-    category:
+      description: >
+        Impact-oriented classifier: how severe is the consequence for the enterprise if this
+        capability is misused or fails (revenue, trust, safety, regulatory exposure)? Optional
+        (SHOULD be set). Organization-defined string, not a fixed enum -- e.g.
+        "revenue-critical", "customer-trust", "regulatory-exposure". Required, together with
+        risk-tier, to compute risk-reward prioritization; a catalog that omits it can sort by
+        risk-tier but cannot rank by risk-reward.
+      example: "revenue-critical"
+    data-sensitivity:
       type: string
-      description: "A category for grouping related capabilities."
-      example: "finance:trading"
-    metadata:
-      type: object
-      description: "An open-ended object for additional, custom metadata."
-      example:
-        compliance_tag: "sox"
-        region: "emea"
+      enum: [public, internal, confidential, restricted]
+      description: "Data classification exposed by the action. Optional."
+      example: "confidential"
+    geography:
+      type: string
+      description: >
+        Optional. Jurisdictional/geographic scope of the capability, relevant to data-residency
+        and federation decisions.
+      example: "global"
+    org-unit:
+      type: string
+      description: "Optional. Owning organizational unit, for accountability and review routing."
+      example: "payments-platform"
+
+# capability_id is computed, not freely authored -- this section documents the formula that
+# `id` above must satisfy. See
+# docs/02-reference/components/capability-catalog.md#the-capability_id-convention and
+# docs/02-reference/information-model/README.md.
+capability_id_computation:
+  formula: 'SHA-256("<group-slug>|<action-slug>|<resource-slug>")'
+  notes: >
+    Only group, action, and resource feed the hash. Optional classifiers (risk-tier,
+    business-impact, data-sensitivity, geography, org-unit) are never part of the preimage, so
+    re-assessing a capability's risk or ownership does not change its capability_id.
+  worked_example:
+    group: payments
+    action: transfer
+    resource: bank-account
+    preimage: "payments|transfer|bank-account"
+    id: "0c451a4b7305a117ad7e4c874799c5982100823ef1b71db3490fffc35a63fef3"
+
+# Fields intentionally NOT part of this schema:
+# - `category`: superseded by `group`, which is backed by a canonical Lexicon and feeds the
+#   capability_id preimage; an independent free-text category would fragment that vocabulary.
+# - An open-ended `metadata` object: governance data beyond the fields above (compliance control
+#   mappings, threat references, etc.) belongs in a separate Gemara #MappingDocument, not an
+#   unstructured bag on the capability entry, so it stays lint-able and queryable. See
+#   docs/02-reference/components/capability-catalog.md.

@@ -27,4 +27,4 @@ Leaving these undefined blocks item 6 (authorization-to-execution contract), ite
 Not yet evaluated.
 
 ## Links
-`../02-reference/information-model/core-identifiers.md`, `../03-metrics-and-compliance/governance-metrics/trace-completeness.md`
+`../02-reference/information-model/README.md#core-identifiers`, `../03-metrics-and-compliance/governance-metrics/planned-metrics.md#trace-completeness`
