@@ -1,0 +1,31 @@
+# GovOps Observable Event Schema v0.1
+
+event:
+  required:
+    - capability_id
+    - decision
+    - timestamp
+  properties:
+    capability_id:
+      type: string
+      description: The unique identifier of the capability that was the subject of the access request.
+    decision:
+      type: string
+      enum: [allow, deny]
+      description: The outcome of the decision.
+    policy_store_id:
+      type: string
+      description: The identifier of the policy store that was used to make the decision.
+    policy_store_version:
+      type: string
+      description: The version of the policy store that was used.
+    actor_identity:
+      type: string
+      description: The identity of the actor performing the action.
+    context:
+      type: object
+      description: A JSON object containing additional context about the request.
+    timestamp:
+      type: string
+      format: date-time
+      description: The timestamp of when the event occurred.

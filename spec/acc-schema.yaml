@@ -1,0 +1,49 @@
+# GovOps ACC Schema v0.1
+#
+# LLM Instruction: This schema defines an entry in the Authorization Capability Catalog (ACC).
+# Each entry represents a unique, governable "capability".
+# Focus on the relationship between `action` and `resource` as the core identifier.
+
+capability:
+  type: object
+  required:
+    - id
+    - action
+    - resource
+  properties:
+    id:
+      type: string
+      description: "A unique, persistent identifier for the capability. (e.g., UUID, URN)"
+      example: "cap:01H8XMPQW9S8T8Z1Y0R4F8J4A4"
+    action:
+      type: string
+      description: "The action being performed, typically a verb. (e.g., 'read', 'approve', 'delete')"
+      example: "approve-trade"
+    resource:
+      type: string
+      description: "The resource upon which the action is performed, often a noun or resource type."
+      example: "financial-transaction"
+    description:
+      type: string
+      description: "A human-readable description of what the capability represents."
+      example: "The capability to approve a financial transaction over a certain value."
+    risk:
+      type: string
+      description: "An assessment of the inherent risk associated with this capability."
+      enum: [low, medium, high, critical]
+      example: "high"
+    business_impact:
+      type: string
+      description: "The potential business impact if this capability is compromised or misused."
+      enum: [low, moderate, significant, severe]
+      example: "severe"
+    category:
+      type: string
+      description: "A category for grouping related capabilities."
+      example: "finance:trading"
+    metadata:
+      type: object
+      description: "An open-ended object for additional, custom metadata."
+      example:
+        compliance_tag: "sox"
+        region: "emea"
