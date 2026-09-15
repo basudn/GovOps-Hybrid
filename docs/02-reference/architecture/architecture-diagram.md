@@ -7,8 +7,8 @@ graph TD
     end
 
     subgraph Enforcement Plane
-        D{Policy Decision Point (PDP)}
-        E[Application / PEP]
+        D{"Policy Decision Point (PDP)"}
+        E["Application / PEP"]
     end
 
     subgraph Data Flow
